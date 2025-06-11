@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="OAK Dental Clinic Admin Dashboard for managing appointments, messages, and subscribers.">
+  <title>OAK Dental Clinic - Admin Dashboard</title>
+  <link rel="icon" href="https://i.postimg.cc/9MdzgVhV/OAK-LOGO-1.jpg" type="image/jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=crossorigin" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      color: #1F2937;
+      background: url('https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
+      background-size: cover;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(90deg, #1F2937, #374151);
+      color: white;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+    .header-container {
+      max-width: 7xl;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    /* Logo */
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-img {
+      width: 40px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: white;
+      padding: 4px;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+      transition: transform 0.3s ease;
+    }
+    .logo-img:hover {
+      transform: scale(1.05);
+    }
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .logo-subtext {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    /* Navigation */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-menu.active {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      background: #1F2937;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+      padding: 20px 0;
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    .nav-menu:not(.active) {
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    .nav-link {
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+      text-align: center;
+    }
+    .nav-link:hover {
+      background-color: #374151;
+      transform: translateX(5px);
+    }
+    .hamburger {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: white;
+      padding: 8px;
+      display: none;
+      transition: transform 0.3s ease;
+    }
+    .hamburger:hover {
+      transform: rotate(90deg);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(45deg, #3B82F6, #60A5FA);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(45deg, #1E40AF, #2563EB);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .btn-secondary {
+      background: linear-gradient(45deg, #6B7280, #9CA3AF);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: linear-gradient(45deg, #4B5563, #6B7280);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .btn-danger {
+      background: linear-gradient(45deg, #EF4444, #F87171);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-danger:hover {
+      background: linear-gradient(45deg, #B91C1C, #DC2626);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .action-buttons button {
+      font-size: 0.95rem;
+      padding: 10px 20px;
+      min-width: 120px;
+      text-align: center;
+    }
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+    .card-actions button {
+      font-size: 0.95rem;
+      padding: 10px 20px;
+      min-width: 120px;
+      text-align: center;
+      flex: 1 1 auto;
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow-x: auto;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Tables */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .admin-table th,
+    .admin-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid #E5E7EB;
+      font-size: 1rem;
+    }
+    .admin-table th {
+      background: linear-gradient(45deg, #1F2937, #374151);
+      color: white;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .admin-table tr:hover {
+      background: #F3F4F6;
+    }
+
+    /* Mobile Table Cards */
+    .table-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .table-card:hover {
+      transform: translateY(-3px);
+    }
+    .table-card p {
+      margin: 8px 0;
+      font-size: 1rem;
+      color: #1F2937;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+    .modal-content {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 95%;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.3s ease;
+    }
+    .modal-content h3 {
+      color: #1F2937;
+      margin-bottom: 16px;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .modal-content input,
+    .modal-content textarea,
+    .modal-content button {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .modal-content input,
+    .modal-content textarea {
+      border: 1px solid #D1D5DB;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .modal-content input:focus,
+    .modal-content textarea:focus {
+      border-color: #3B82F6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    .modal-content button {
+      background: linear-gradient(45deg, #3B82F6, #60A5FA);
+      color: white;
+      border: none;
+      font-weight: 600;
+    }
+    .modal-content button:hover {
+      background: linear-gradient(45deg, #1E40AF, #2563EB);
+    }
+
+    /* Form Validation */
+    .valid {
+      border-color: #10B981 !important;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="%2310B981" viewBox="0 0 16 16"><path d="M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z"/></svg>') no-repeat right 8px center;
+    }
+
+    /* Auth Forms */
+    .auth-form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .auth-form h2 {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      color: #1F2937;
+      font-weight: 700;
+    }
+    .auth-form input {
+      font-size: 1rem;
+      padding: 12px;
+      border-radius: 8px;
+    }
+    .auth-form button {
+      padding: 12px;
+      font-size: 1rem;
+    }
+    .auth-form a,
+    .auth-form p {
+      font-size: 0.95rem;
+      color: #1F2937;
+    }
+    .auth-toggle {
+      color: #3B82F6;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .auth-toggle:hover {
+      color: #F472B6;
+    }
+
+    /* Toast Notifications */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 14px 28px;
+      border-radius: 10px;
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.success {
+      background: linear-gradient(45deg, #10B981, #34D399);
+    }
+    .toast.error {
+      background: linear-gradient(45deg, #EF4444, #F87171);
+    }
+
+    /* Welcome Message */
+    .welcome-message {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 96px;
+      margin-bottom: 32px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 0.5s ease;
+    }
+    .welcome-message h2 {
+      color: #1F2937;
+      font-size: 2rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .welcome-message p {
+      color: #1F2937;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* No Data Message */
+    .no-data {
+      text-align: center;
+      padding: 20px;
+      color: #6B7280;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Bulk Actions */
+    .bulk-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .select-all-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    /* Animations */
+    @keyframes slideIn {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-100%); opacity: 0; }
+    }
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Media Queries */
+    @media (max-width: 640px) {
+      .header-container {
+        height: 56px;
+        padding: 0 12px;
+      }
+      .logo-img {
+        width: 36px;
+      }
+      .logo-text {
+        font-size: 1.1rem;
+      }
+      .logo-subtext {
+        font-size: 0.65rem;
+      }
+      .hamburger {
+        display: block;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .nav-menu.active {
+        display: flex;
+        animation: slideIn 0.3s ease forwards;
+      }
+      .nav-menu:not(.active) {
+        display: none;
+        animation: slideOut 0.3s ease forwards;
+      }
+      .nav-link {
+        font-size: 1.2rem;
+        padding: 16px 24px;
+      }
+      .admin-table {
+        display: none;
+      }
+      .table-card {
+        display: block;
+      }
+      .table-card p {
+        font-size: 1.1rem;
+      }
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger {
+        padding: 10px 20px;
+        font-size: 1rem;
+        min-width: 140px;
+      }
+      .action-buttons button,
+      .card-actions button {
+        padding: 10px 16px;
+        font-size: 1rem;
+        min-width: 140px;
+      }
+      .modal-content {
+        width: 90%;
+        padding: 20px;
+      }
+      .modal-content h3 {
+        font-size: 1.2rem;
+      }
+      .modal-content input,
+      .modal-content textarea,
+      .modal-content button {
+        padding: 10px;
+        font-size: 1rem;
+      }
+      .auth-form {
+        max-width: 95%;
+        padding: 20px;
+      }
+      .auth-form h2 {
+        font-size: 1.3rem;
+      }
+      .welcome-message {
+        margin-top: 80px;
+        padding: 20px;
+      }
+      .welcome-message h2 {
+        font-size: 1.6rem;
+      }
+      .welcome-message p {
+        font-size: 1rem;
+      }
+      .toast {
+        width: 90%;
+        font-size: 1rem;
+        padding: 12px 24px;
+      }
+      .bulk-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .bulk-actions button {
+        width: 100%;
+        text-align: center;
+      }
+      .select-all-checkbox {
+        width: 22px;
+        height: 22px;
+      }
+    }
+    @media (min-width: 641px) {
+      .hamburger {
+        display: none;
+      }
+      .nav-menu {
+        display: flex !important;
+        flex-direction: row;
+        position: static;
+        width: auto;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        transform: none;
+        opacity: 1;
+      }
+      .nav-link {
+        padding: 10px 18px;
+        font-size: 1rem;
+      }
+      .table-card {
+        display: none;
+      }
+      .admin-table {
+        display: table;
+      }
+      .header-container {
+        height: 72px;
+      }
+      .logo-img {
+        width: 44px;
+      }
+      .logo-text {
+        font-size: 1.3rem;
+      }
+      .logo-subtext {
+        font-size: 0.75rem;
+      }
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
+      .modal-content {
+        width: 400px;
+        padding: 24px;
+      }
+      .modal-content h3 {
+        font-size: 1.25rem;
+      }
+      .auth-form {
+        max-width: 420px;
+        padding: 24px;
+      }
+      .auth-form h2 {
+        font-size: 1.75rem;
+      }
+      .welcome-message {
+        margin-top: 104px;
+      }
+      .welcome-message h2 {
+        font-size: 2rem;
+      }
+      .welcome-message p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="antialiased">
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <div class="logo-container">
+        <a href="/admin" aria-label="OAK Dental Clinic Admin Dashboard">
+          <img src="https://i.postimg.cc/9MdzgVhV/OAK-LOGO-1.jpg" alt="OAK Dental Clinic Logo" class="logo-img animate__animated animate__fadeIn" loading="lazy">
+        </a>
+        <div class="flex flex-col">
+          <a href="/admin" class="logo-text" aria-label="OAK Dental Clinic">OAK Dental Clinic</a>
+          <span class="logo-subtext">Admin Dashboard</span>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <div class="hamburger" aria-label="Toggle navigation menu"><i class="fas fa-bars"></i></div>
+        <div class="nav-menu">
+          <a href="#appointments" class="nav-link">Appointments</a>
+          <a href="#messages" class="nav-link">Messages</a>
+          <a href="#subscribers" class="nav-link">Subscribers</a>
+          <a href="#" class="nav-link" onclick="logout()">Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login/Register Section -->
+  <section id="auth" class="min-h-screen flex items-center justify-center pt-20 px-4">
+    <div class="card auth-form animate__animated animate__fadeIn">
+      <div class="flex flex-col gap-4">
+        <!-- Login Form -->
+        <div id="loginFormContainer">
+          <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Admin Login</h2>
+          <form id="loginForm" class="space-y-3">
+            <input type="email" name="email" placeholder="Email" class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <input type="password" name="password" placeholder="Password" class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <button type="submit" class="btn-primary w-full">Login</button>
+            <a href="#" class="text-blue-500 hover:text-blue-600 text-center block" onclick="showModal('forgotPasswordModal')">Forgot Password?</a>
+            <p class="text-center mt-2">Don't have an account? <span class="auth-toggle" onclick="showRegister()">Register</span></p>
+          </form>
+        </div>
+        <!-- Register Form -->
+        <div class="hidden" id="registerFormContainer">
+          <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Admin Register</h2>
+          <form id="registerForm" class="space-y-3">
+            <input type="text" name="name" placeholder="Full Name" class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <input type="email" name="email" placeholder="Email" class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <input type="password" name="password" placeholder="Password" class="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+            <button type="submit" class="btn-primary w-full">Register</button>
+            <p class="text-center mt-2">Already have an account? <span class="auth-toggle" onclick="showLogin()">Login</span></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Section (Hidden by Default) -->
+  <section id="dashboard" class="py-20 px-4 hidden">
+    <div class="max-w-7xl mx-auto">
+      <!-- Welcome Message -->
+      <div class="welcome-message animate__animated animate__fadeInUp">
+        <h2 id="welcomeTitle">Welcome!</h2>
+        <p>Manage appointments, messages, and subscribers with ease.</p>
+      </div>
+
+      <!-- Appointments -->
+      <div id="appointments" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 animate__animated animate__fadeIn">Appointments</h2>
+        <div class="bulk-actions">
+          <div class="checkbox-container">
+            <input type="checkbox" id="selectAllAppointments" class="select-all-checkbox">
+            <label for="selectAllAppointments" class="text-gray-800 font-medium">Select All</label>
+          </div>
+          <button class="btn-danger" onclick="showBulkDeleteModal()" disabled id="bulkDeleteButton">Delete Selected</button>
+        </div>
+        <div class="card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Date</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="appointmentsTable"></tbody>
+          </table>
+          <div id="appointmentsCards" class="table-card-container"></div>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="messages" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 animate__animated animate__fadeIn">Messages</h2>
+        <div class="card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="messagesTable"></tbody>
+          </table>
+          <div id="messagesCards" class="table-card-container"></div>
+        </div>
+      </div>
+
+      <!-- Subscribers -->
+      <div id="subscribers" class="mb-12">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 animate__animated animate__fadeIn">Subscribers</h2>
+        <div class="card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Subscribed On</th>
+              </tr>
+            </thead>
+            <tbody id="subscribersTable"></tbody>
+          </table>
+          <div id="subscribersCards" class="table-card-container"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotPasswordModal" class="modal">
+    <div class="modal-content">
+      <h3>Forgot Password</h3>
+      <form id="forgotPasswordForm" class="space-y-3">
+        <input type="email" name="email" placeholder="Enter your email" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+        <button type="submit" class="btn-primary">Send OTP</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('forgotPasswordModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- OTP Verification Modal -->
+  <div id="otpModal" class="modal">
+    <div class="modal-content">
+      <h3>Verify OTP</h3>
+      <form id="otpForm" class="space-y-3">
+        <input type="text" name="otp" placeholder="Enter OTP" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+        <button type="submit" class="btn-primary">Verify OTP</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('otpModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div id="resetPasswordModal" class="modal">
+    <div class="modal-content">
+      <h3>Reset Password</h3>
+      <form id="resetPasswordForm" class="space-y-3">
+        <input type="password" name="newPassword" placeholder="New Password" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+        <button type="submit" class="btn-primary">Reset Password</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('resetPasswordModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Cancel Appointment Modal -->
+  <div id="cancelAppointmentModal" class="modal">
+    <div class="modal-content">
+      <h3>Cancel Appointment</h3>
+      <form id="cancelAppointmentForm" class="space-y-3">
+        <textarea name="reason" placeholder="Reason for cancellation" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required></textarea>
+        <button type="submit" class="btn-primary">Submit</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('cancelAppointmentModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Appointment Modal -->
+  <div id="deleteAppointmentModal" class="modal">
+    <div class="modal-content">
+      <h3>Delete Appointment</h3>
+      <p>Are you sure you want to delete this appointment?</p>
+      <form id="deleteAppointmentForm" class="space-y-3">
+        <button type="submit" class="btn-danger">Delete</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('deleteAppointmentModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bulk Delete Appointment Modal -->
+  <div id="bulkDeleteAppointmentModal" class="modal">
+    <div class="modal-content">
+      <h3>Delete Selected Appointments</h3>
+      <p>Are you sure you want to delete the selected appointments?</p>
+      <form id="bulkDeleteAppointmentForm" class="space-y-3">
+        <button type="submit" class="btn-danger">Delete Selected</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('bulkDeleteAppointmentModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reply Message Modal -->
+  <div id="replyMessageModal" class="modal">
+    <div class="modal-content">
+      <h3>Reply to Message</h3>
+      <form id="replyMessageForm" class="space-y-3">
+        <textarea name="reply" placeholder="Your reply" class="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required></textarea>
+        <button type="submit" class="btn-primary">Send Reply</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('replyMessageModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Message Modal -->
+  <div id="deleteMessageModal" class="modal">
+    <div class="modal-content">
+      <h3>Delete Message</h3>
+      <p>Are you sure you want to delete this message?</p>
+      <form id="deleteMessageForm" class="space-y-3">
+        <button type="submit" class="btn-danger">Delete</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('deleteMessageModal')">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // API Configuration
+    const API_BASE_URL = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : 'https://oak-dental.onrender.com/api';
+
+    // Toast Notification Function
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type} animate__animated animate__fadeInDown`;
+      toast.textContent = message;
+      document.getElementById('toastContainer').appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('animate__fadeOutUp');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    // Helper Function for API Calls
+    async function apiCall(endpoint, method = 'GET', data = null) {
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      const token = localStorage.getItem('token');
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      const config = { method, headers };
+      if (data) config.body = JSON.stringify(data);
+      try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Request failed');
+        return result;
+      } catch (error) {
+        console.error(`API error at ${endpoint}:`, error);
+        showToast(error.message || 'Request failed. Please try again.', 'error');
+        throw error;
+      }
+    }
+
+    // Debounce Function
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Populate Tables and Cards
+    const populateTables = debounce(async () => {
+      console.log('Populating tables...');
+      try {
+        // Fetch Appointments
+        const appointments = await apiCall('/admin/appointments');
+        console.log('Appointments response:', appointments);
+        const appointmentsTable = document.getElementById('appointmentsTable');
+        const appointmentsCards = document.getElementById('appointmentsCards');
+        const bulkActions = document.querySelector('.bulk-actions');
+        bulkActions.style.display = 'flex';
+
+        if (!appointments || appointments.length === 0) {
+          console.log('No appointments found.');
+          appointmentsTable.innerHTML = '<tr><td colspan="8" class="no-data">No appointments available.</td></tr>';
+          appointmentsCards.innerHTML = '<div class="no-data">No appointments available.</div>';
+          document.getElementById('bulkDeleteButton').disabled = true;
+          return;
+        }
+
+        appointmentsTable.innerHTML = appointments.map(item => `
+          <tr>
+            <td><input type="checkbox" class="appointment-checkbox" data-id="${item.id}"></td>
+            <td>${item.name || ''}</td>
+            <td>${item.email || ''}</td>
+            <td>${item.phone || ''}</td>
+            <td>${item.date || ''}</td>
+            <td>${item.message || ''}</td>
+            <td>${item.status || 'Pending'}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-primary" onclick="acceptAppointment(${item.id})">Accept</button>
+                <button class="btn-danger" onclick="showCancelModal(${item.id})">Cancel</button>
+                <button class="btn-danger" onclick="showDeleteAppointmentModal(${item.id})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+        appointmentsCards.innerHTML = appointments.map(item => `
+          <div class="table-card">
+            <div class="checkbox-container">
+              <input type="checkbox" class="appointment-checkbox" data-id="${item.id}">
+              <label>Select</label>
+            </div>
+            <p><strong>Name:</strong> ${item.name || ''}</p>
+            <p><strong>Email:</strong> ${item.email || ''}</p>
+            <p><strong>Phone:</strong> ${item.phone || ''}</p>
+            <p><strong>Date:</strong> ${item.date || ''}</p>
+            <p><strong>Message:</strong> ${item.message || ''}</p>
+            <p><strong>Status:</strong> ${item.status || 'Pending'}</p>
+            <div class="card-actions">
+              <button class="btn-primary" onclick="acceptAppointment(${item.id})">Accept</button>
+              <button class="btn-danger" onclick="showCancelModal(${item.id})">Cancel</button>
+              <button class="btn-danger" onclick="showDeleteAppointmentModal(${item.id})">Delete</button>
+            </div>
+          </div>
+        `).join('');
+        updateBulkDeleteButton();
+
+        // Fetch Messages
+        const messages = await apiCall('/admin/messages');
+        const messagesTable = document.getElementById('messagesTable');
+        const messagesCards = document.getElementById('messagesCards');
+        messagesTable.innerHTML = messages.map(item => `
+          <tr>
+            <td>${item.full_name || ''}</td>
+            <td>${item.email || ''}</td>
+            <td>${item.message || ''}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-primary" onclick="showReplyModal(${item.id}, '${item.email.replace(/'/g, "\\'")}')">Reply</button>
+                <button class="btn-danger" onclick="showDeleteMessageModal(${item.id})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+        messagesCards.innerHTML = messages.map(item => `
+          <div class="table-card">
+            <p><strong>Name:</strong> ${item.full_name || ''}</p>
+            <p><strong>Email:</strong> ${item.email || ''}</p>
+            <p><strong>Message:</strong> ${item.message || ''}</p>
+            <div class="card-actions">
+              <button class="btn-primary" onclick="showReplyModal(${item.id}, '${item.email.replace(/'/g, "\\'")}')">Reply</button>
+              <button class="btn-danger" onclick="showDeleteMessageModal(${item.id})">Delete</button>
+            </div>
+          </div>
+        `).join('');
+
+        // Fetch Subscribers
+        const subscribers = await apiCall('/admin/subscribers');
+        const subscribersTable = document.getElementById('subscribersTable');
+        const subscribersCards = document.getElementById('subscribersCards');
+        subscribersTable.innerHTML = subscribers.map(item => `
+          <tr>
+            <td>${item.email || ''}</td>
+            <td>${new Date(item.subscribed_on).toLocaleDateString() || ''}</td>
+          </tr>
+        `).join('');
+        subscribersCards.innerHTML = subscribers.map(item => `
+          <div class="table-card">
+            <p><strong>Email:</strong> ${item.email || ''}</p>
+            <p><strong>Subscribed On:</strong> ${new Date(item.subscribed_on).toLocaleDateString() || ''}</p>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error in populateTables:', error);
+        showToast('Failed to load dashboard data.', 'error');
+      }
+    }, 200);
+
+    // Modal Functions
+    function showModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      document.body.style.overflow = 'auto';
+      const formIds = ['cancelAppointmentForm', 'replyMessageForm', 'deleteAppointmentForm', 'deleteMessageForm', 'bulkDeleteAppointmentForm'];
+      if (formIds.includes(modalId.replace('Modal', 'Form'))) {
+        document.getElementById(modalId.replace('Modal', 'Form')).reset();
+      }
+    }
+
+    // Toggle Login/Register
+    function showRegister() {
+      document.getElementById('loginFormContainer').classList.add('hidden');
+      document.getElementById('registerFormContainer').classList.remove('hidden');
+    }
+    function showLogin() {
+      document.getElementById('registerFormContainer').classList.add('hidden');
+      document.getElementById('loginFormContainer').classList.remove('hidden');
+    }
+
+    // Hamburger Menu
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    hamburger.addEventListener('click', () => {
+      console.log('Hamburger clicked');
+      const isActive = navMenu.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isActive);
+      document.body.style.overflow = isActive ? 'hidden' : 'auto';
+      navMenu.style.display = isActive ? 'flex' : 'none';
+    });
+
+    // Close menu when a nav link is clicked
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Nav link clicked:', link.getAttribute('href'));
+        navMenu.classList.remove('active');
+        navMenu.style.display = 'none';
+        hamburger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = 'auto';
+        const targetId = link.getAttribute('href').substring(1);
+        if (targetId && targetId !== '#') {
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+
+    // Login Form
+    let adminName = '';
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(loginForm);
+      const data = Object.fromEntries(formData);
+      try {
+        const response = await apiCall('/admin/login', 'POST', data);
+        localStorage.setItem('token', response.token);
+        adminName = response.name;
+        document.getElementById('auth').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        navMenu.style.display = 'flex';
+        document.getElementById('welcomeTitle').textContent = `Welcome, ${adminName}!`;
+        await populateTables();
+        showToast('Login successful!', 'success');
+      } catch (error) {
+        showToast('Login failed.', 'error');
+      }
+    });
+
+    // Register Form
+    const registerForm = document.getElementById('registerForm');
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(registerForm);
+      const data = Object.fromEntries(formData);
+      try {
+        await apiCall('/admin/register', 'POST', data);
+        showToast('Registration successful. Please login.', 'success');
+        showLogin();
+        registerForm.reset();
+      } catch (error) {
+        showToast('Registration failed.', 'error');
+      }
+    });
+
+    // Forgot Password Form
+    let forgotPasswordEmail = '';
+    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    forgotPasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(forgotPasswordForm);
+      const data = Object.fromEntries(formData);
+      forgotPasswordEmail = data.email;
+      try {
+        await apiCall('/admin/send-otp', 'POST', data);
+        closeModal('forgotPasswordModal');
+        showModal('otpModal');
+        showToast('OTP sent successfully.', 'success');
+      } catch (error) {
+        showToast('Failed to send OTP.', 'error');
+      }
+    });
+
+    // OTP Verification Form
+    const otpForm = document.getElementById('otpForm');
+    otpForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(otpForm);
+      const data = Object.fromEntries(formData);
+      try {
+        await apiCall('/admin/verify-otp', 'POST', { email: forgotPasswordEmail, otp: data.otp });
+        closeModal('otpModal');
+        showModal('resetPasswordModal');
+        showToast('OTP verified successfully.', 'success');
+      } catch (error) {
+        showToast('Invalid OTP.', 'error');
+      }
+    });
+
+    // Reset Password Form
+    const resetPasswordForm = document.getElementById('resetPasswordForm');
+    resetPasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(resetPasswordForm);
+      const data = Object.fromEntries(formData);
+      if (data.newPassword !== data.confirmPassword) {
+        showToast('Passwords do not match.', 'error');
+        return;
+      }
+      try {
+        await apiCall('/admin/reset-password', 'POST', { email: forgotPasswordEmail, ...data });
+        closeModal('resetPasswordModal');
+        showToast('Password reset successfully.', 'success');
+        showLogin();
+      } catch (error) {
+        showToast('Failed to reset password.', 'error');
+      }
+    });
+
+    // Appointment Actions
+    const acceptAppointment = debounce(async (id) => {
+      try {
+        await apiCall('/admin/appointment/action', 'POST', { id, action: 'accept' });
+        await populateTables();
+        showToast('Appointment accepted.', 'success');
+      } catch (error) {
+        showToast('Failed to accept appointment.', 'error');
+      }
+    }, 200);
+
+    let currentAppointmentId = null;
+    function showCancelModal(id) {
+      currentAppointmentId = id;
+      showModal('cancelAppointmentModal');
+    }
+
+    const cancelAppointmentForm = document.getElementById('cancelAppointmentForm');
+    cancelAppointmentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(cancelAppointmentForm);
+      const data = Object.fromEntries(formData);
+      try {
+        await apiCall('/admin/appointment/action', 'POST', { id: currentAppointmentId, action: 'cancel', reason: data.reason });
+        closeModal('cancelAppointmentModal');
+        await populateTables();
+        showToast('Appointment cancelled.', 'success');
+      } catch (error) {
+        showToast('Failed to cancel appointment.', 'error');
+      }
+    });
+
+    function showDeleteAppointmentModal(id) {
+      currentAppointmentId = id;
+      showModal('deleteAppointmentModal');
+    }
+
+    const deleteAppointmentForm = document.getElementById('deleteAppointmentForm');
+    deleteAppointmentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await apiCall('/admin/appointment/delete', 'DELETE', { id: currentAppointmentId });
+        closeModal('deleteAppointmentModal');
+        await populateTables();
+        showToast('Appointment deleted successfully.', 'success');
+      } catch (error) {
+        showToast('Failed to delete appointment.', 'error');
+      }
+    });
+
+    // Bulk Delete Appointments
+    function updateBulkDeleteButton() {
+      const checkboxes = document.querySelectorAll('.appointment-checkbox:checked');
+      const bulkDeleteButton = document.getElementById('bulkDeleteButton');
+      bulkDeleteButton.disabled = checkboxes.length === 0;
+    }
+
+    function showBulkDeleteModal() {
+      const selectedIds = Array.from(document.querySelectorAll('.appointment-checkbox:checked')).map(cb => parseInt(cb.dataset.id));
+      if (selectedIds.length === 0) {
+        showToast('No appointments selected.', 'error');
+        return;
+      }
+      showModal('bulkDeleteAppointmentModal');
+    }
+
+    const bulkDeleteAppointmentForm = document.getElementById('bulkDeleteAppointmentForm');
+    bulkDeleteAppointmentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const selectedIds = Array.from(document.querySelectorAll('.appointment-checkbox:checked')).map(cb => parseInt(cb.dataset.id));
+      if (selectedIds.length === 0) {
+        showToast('No appointments selected.', 'error');
+        closeModal('bulkDeleteAppointmentModal');
+        return;
+      }
+      try {
+        await Promise.all(selectedIds.map(id => apiCall('/admin/appointment/delete', 'DELETE', { id })));
+        closeModal('bulkDeleteAppointmentModal');
+        await populateTables();
+        showToast(`${selectedIds.length} appointment${selectedIds.length > 1 ? 's' : ''} deleted successfully.`, 'success');
+      } catch (error) {
+        showToast('Failed to delete appointments.', 'error');
+      }
+    });
+
+    // Select All Checkbox
+    const selectAllCheckbox = document.getElementById('selectAllAppointments');
+    selectAllCheckbox.addEventListener('change', () => {
+      const checkboxes = document.querySelectorAll('.appointment-checkbox');
+      checkboxes.forEach(cb => cb.checked = selectAllCheckbox.checked);
+      updateBulkDeleteButton();
+    });
+
+    document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('appointment-checkbox')) {
+        updateBulkDeleteButton();
+        const allCheckboxes = document.querySelectorAll('.appointment-checkbox');
+        const checkedCheckboxes = document.querySelectorAll('.appointment-checkbox:checked');
+        selectAllCheckbox.checked = allCheckboxes.length === checkedCheckboxes.length;
+      }
+    });
+
+    // Message Actions
+    let currentMessageId = null;
+    let currentMessageEmail = '';
+    function showReplyModal(id, email) {
+      currentMessageId = id;
+      currentMessageEmail = email;
+      showModal('replyMessageModal');
+    }
+
+    const replyMessageForm = document.getElementById('replyMessageForm');
+    replyMessageForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(replyMessageForm);
+      const data = Object.fromEntries(formData);
+      try {
+        await apiCall('/admin/message/reply', 'POST', { id: currentMessageId, reply: data.reply });
+        closeModal('replyMessageModal');
+        showToast('Reply sent successfully.', 'success');
+      } catch (error) {
+        showToast('Failed to send reply.', 'error');
+      }
+    });
+
+    function showDeleteMessageModal(id) {
+      currentMessageId = id;
+      showModal('deleteMessageModal');
+    }
+
+    const deleteMessageForm = document.getElementById('deleteMessageForm');
+    deleteMessageForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await apiCall('/admin/message/delete', 'DELETE', { id: currentMessageId });
+        closeModal('deleteMessageModal');
+        await populateTables();
+        showToast('Message deleted successfully.', 'success');
+      } catch (error) {
+        showToast('Failed to delete message.', 'error');
+      }
+    });
+
+    // Logout Function
+    function logout() {
+      localStorage.removeItem('token');
+      document.getElementById('dashboard').classList.add('hidden');
+      document.getElementById('auth').classList.remove('hidden');
+      navMenu.classList.remove('active');
+      navMenu.style.display = 'none';
+      loginForm.reset();
+      showLogin();
+      showToast('Logged out successfully.', 'success');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Form Validation
+    ['loginForm', 'registerForm', 'forgotPasswordForm', 'otpForm', 'resetPasswordForm', 'cancelAppointmentForm', 'replyMessageForm', 'deleteAppointmentForm', 'deleteMessageForm', 'bulkDeleteAppointmentForm'].forEach(formId => {
+      const form = document.getElementById(formId);
+      if (form) {
+        form.querySelectorAll('input, textarea').forEach(input => {
+          input.addEventListener('input', () => {
+            if (input.checkValidity()) {
+              input.classList.add('valid');
+            } else {
+              input.classList.remove('valid');
+            }
+          });
+        });
+      }
+    });
+
+    // Initial Load
+    window.addEventListener('load', async () => {
+      const token = localStorage.getItem('token');
+      navMenu.style.display = 'none';
+      if (token) {
+        try {
+          const profile = await apiCall('/admin/profile');
+          adminName = profile.name;
+          document.getElementById('auth').classList.add('hidden');
+          document.getElementById('dashboard').classList.remove('hidden');
+          navMenu.style.display = 'flex';
+          document.getElementById('welcomeTitle').textContent = `Welcome, ${adminName}!`;
+          await populateTables();
+        } catch (error) {
+          localStorage.removeItem('token');
+          showToast('Session expired. Please login.', 'error');
+        }
+      }
+    });
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 640) {
+        navMenu.classList.remove('active');
+        navMenu.style.display = 'flex';
+        document.body.style.overflow = 'auto';
+        hamburger.setAttribute('aria-expanded', 'false');
+      } else {
+        navMenu.style.display = navMenu.classList.contains('active') ? 'flex' : 'none';
+      }
+    });
+  </script>
+</body>
+</html>
